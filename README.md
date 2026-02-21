@@ -21,21 +21,7 @@ The machine learning model has already been:
 - Output: Probability of default + risk category
 - Supports unseen customer data
 
-## Repository Structure
-loan-default-app/
-│
-├── models/ # FINAL MODEL ARTIFACTS (DO NOT MODIFY)
-│ ├── final_stacking_model.pkl
-│ ├── preprocess_pipeline.pkl
-│ ├── selected_feature_indices.pkl
-│ ├── raw_feature_columns.pkl
-│
-├── app/ # Application code
-│ ├── app.py
-│ ├── predict.py
-│
-├── requirements.txt
-└── README.md
+
 
 ## IMPORTANT RULES
 
