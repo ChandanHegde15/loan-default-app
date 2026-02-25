@@ -1,19 +1,50 @@
-# Loan Default Prediction – Application Repository
-
-## Project Overview
-This repository contains the deployment-ready application layer for a Loan Default Prediction System.
-It uses a pre-trained machine learning model to predict the probability of loan default for new, unseen customers.
-
-The machine learning model has already been:
-- Trained
-- Validated
-- Finalized
-- Serialized
-
- ⚠️No model training or feature engineering is performed in this repository.⚠️
+## Loan Default Prediction – Application Repository
+Project Overview
+This repository contains the deployment-ready application layer for a Loan Risk Assessment System.
+The system supports two distinct use cases:
+Pre-Loan Eligibility Assessment (new applicants)
+Post-Loan Default Risk Monitoring (issued loans / portfolio)
+All machine learning models in this repository are:
+Trained
+Validated
+Finalized
+Serialized (.pkl)
+## ⚠️ No model training, feature engineering, or re-fitting is performed in this repository⚠️
+This repository is strictly for inference, integration, and deployment.
 
 ## Model Summary
-- Final Model: Stacking Ensemble
+1️⃣ Pre-Loan Eligibility Model
+Model: Logistic Regression
+Purpose: Real-time screening of new loan applicants
+Input: Applicant-time features only
+Output:
+Eligibility probability
+Risk band (Low / Medium / High)
+Preprocessing: Embedded inside the model pipeline
+## File location:
+models_preloan/eligibility_lr.pkl
+
+## 2️⃣ Post-Loan Default Monitoring Model
+Final Model: Stacking Ensemble
+Base Models: Random Forest, XGBoost
+Meta Model: Logistic Regression
+Purpose: Portfolio-level default risk monitoring
+Imbalance Handling: SMOTE + ENN (training phase only)
+Feature Selection: 76 selected features
+Output:
+Probability of default
+Risk category (Low / Medium / High)
+Files:
+
+models/
+├── final_stacking_model.pkl
+├── preprocess_pipeline.pkl
+├── selected_feature_indices.pkl
+├── raw_feature_columns.pkl
+
+## Model Summary
+- Final Model for Pre-loan Default Monitoring : Linear Regression
+- Final Model for post loan default monitoring: Stacking Ensemble
   - Base Models: Random Forest, XGBoost
   - Meta Model: Logistic Regression
 - Imbalance Handling: SMOTE + ENN (training phase only)
@@ -25,17 +56,10 @@ The machine learning model has already been:
 
 ## IMPORTANT RULES
 
-### What NOT to do
-- Do NOT retrain the model
-- Do NOT modify or replace `.pkl` files
-- Do NOT add training notebooks to this repository
-- Do NOT change preprocessing or feature selection
 
 ### What you SHOULD do
 - Load model files only from `/models`
-- Build web UI / API / database layer
-- Use the provided prediction pipeline
-- Handle new customer inputs safely
+
 
 The `/models` directory must be treated as READ-ONLY.
 
@@ -51,25 +75,7 @@ Raw customer input
 → Probability of default  
 → Risk category (Low / Medium / High)
 
-## Input Format Example
-{
-"loan_amnt": 15000,
-"term": "36 months",
-"int_rate": 13.5,
-"installment": 510,
-"grade": "B",
-"sub_grade": "B2",
-"home_ownership": "RENT",
-"annual_inc": 60000,
-"verification_status": "Verified",
-"purpose": "credit_card",
-"dti": 18.5,
-"fico_range_low": 690,
-"fico_range_high": 694
-}
 
-- Missing fields are handled safely
-- Unseen categorical values are supported
 
 ---
 
